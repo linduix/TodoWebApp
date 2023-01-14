@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "deno",
+			"command": "run",
+			"args": [
+				"--allow-net",
+				"--allow-read",
+				"--allow-env",
+				"backend/astroserver.ts"
+			],
+			"problemMatcher": [
+				"$deno"
+			],
+			"label": "deno: run"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "frontend",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build - frontend",
+			"detail": "astro build"
+		},
+		{
+			"label": "pnpm build - frontend",
+			"type": "shell",
+			"command": "pnpm -C frontend run build",
+			"group" : {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

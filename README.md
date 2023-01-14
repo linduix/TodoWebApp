@@ -7,4 +7,3 @@ Stack planned to use includes:
 - deno for backend 
 - some implementation of mongodb used by prisma orm as the database
 - Docker to containerize the frontend, backend, and database then combine them with docker compose
-
