@@ -1,0 +1,9 @@
+FROM denoland/deno:1.29.3
+
+WORKDIR /app
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["deno", "run", "--allow-all", "main.ts"]

@@ -10,11 +10,13 @@ import tailwind from "@astrojs/tailwind";
 import deno from "@astrojs/deno";
 
 // https://astro.build/config
+
+// https://astro.build/config
 export default defineConfig({
   integrations: [svelte(), tailwind()],
   output: "server",
   adapter: deno({
-    port: 8000,
-    hostname: 'localhost',
+    port: 8085,
+    hostname: '0.0.0.0'
   })
 });
