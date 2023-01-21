@@ -1,4 +1,21 @@
 {
     "deno.enable": true,
-    "deno.unstable": true
+    "deno.unstable": true,
+    "css.validate": false,
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "astro": "html",
+    "javascript":"javascript"  
+    },
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "tailwindCSS.classAttributes": [
+        "class",
+        "className",
+        "ngClass"
+    ]
 }
