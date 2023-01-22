@@ -18,8 +18,7 @@ class Hello(Resource):
         return {"hello": name if name else "world"}
 
     def post(self):
-        '''post method'''
-        pass
+        body = request.json
 
 
 app = Flask(__name__)
