@@ -20,6 +20,7 @@ pyjwt = "2.6.0"
 pytz = "2022.7.1"
 six = "1.16.0"
 werkzeug = "2.2.2"
+flask-sqlalchemy = "^3.0.2"
 
 
 [tool.poetry.group.dev.dependencies]

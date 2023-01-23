@@ -1,37 +1,16 @@
 """
-Module Name: main.py
+Module Name: main
 
-This is the main script for the flask backend server
-"""
-
-from flask import Flask, request
-from flask_restful import Api, Resource
-
-
-class Hello(Resource):
-    """Api Hello endpoint"""
-
-    def get(self):
-        """get method"""
-        name = request.args.get("name")
-        print(name)
-        return {"hello": name if name else "world"}
-
-    def post(self):
-        """post methood"""
-        body = request.json
-
-
-app = Flask(__name__)
-api = Api(app)
-api.add_resource(Hello, "/hello")
-
-
-@app.route("/hi", methods=["GET"])
-def hi_endpoint():
-    """server endpoint methood"""
-    return "hello"
-
+This is the main script module for the flask backend server
+"""  
+from flaskapi import app, db
+# from flaskapi import app, db
+# from flaskapi.models import User, Task
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
+    with app.app_context():
+        session = db.session
+        for user in User.query.all():
+            print(user.id, user.username, user.password)
+    pass
