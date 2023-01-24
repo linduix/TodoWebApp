@@ -1,13 +1,15 @@
 '''
 Module Name: models
 
-This module contains the db models that 
-flask api will use
+This module contains the db models 
+and db methoods that flask api will use
 
 Tables Included: Task, User
+Methoods Included: new_user, get_user
 '''
 from datetime import date
-from flaskapi import db
+from flaskapi import db, session
+
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True) # int - Primary key 🔑
@@ -23,3 +25,16 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False) # str
     password = db.Column(db.String(), nullable=False) # str (ha2shed)
     tasks = db.relationship('Task', backref='user', lazy=True) # Task entry relationship
+
+
+def new_user(username, password, email='none'):
+    new_user = User(email=email, username=username, password=password)
+    session.add(new_user)
+    session.commit()
+
+def get_user(id=None, email=None, username=None):
+    if not id and not emai and not username:
+        return None
+    if id:
+        user = User.query.filter_by(id=id).first()
+        return user
