@@ -1,9 +1,7 @@
-from sqlalchemy import (
-        Boolean, String, Integer, 
-        Column, ForeignKey, Text, Date
-    )    
+from sqlalchemy import Boolean, String, Integer, Column, ForeignKey, Text, Date
 from sqlalchemy.orm import relationship
 from . import Base, engine
+
 
 class Task(Base):
     __tablename__ = "task"
@@ -16,6 +14,7 @@ class Task(Base):
         Integer, ForeignKey("user.id"), nullable=False
     )  # int - Foreign key 🗝️
 
+
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)  # int - Primary key 🔑
@@ -23,5 +22,6 @@ class User(Base):
     username = Column(String(20), unique=True, nullable=False)  # str
     password = Column(String(), nullable=False)  # str (ha2shed)
     tasks = relationship("Task", backref="user", lazy=True)
+
 
 Base.metadata.create_all(bind=engine)

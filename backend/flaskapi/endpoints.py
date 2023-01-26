@@ -25,8 +25,8 @@ class Signup(Resource):
     """
 
     def post(self):
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form["username"]
+        password = request.form["password"]
 
         # check required
         if not username:
