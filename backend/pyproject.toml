@@ -22,6 +22,9 @@ werkzeug = "2.2.2"
 flask-sqlalchemy = "^3.0.2"
 flask-jwt-extended = "^4.4.4"
 sendgrid = "^6.9.7"
+fastapi = {extras = ["all"], version = "^0.89.1"}
+sqlalchemy = "^1.4.46"
+python-jose = "^3.3.0"
 
 
 [tool.poetry.group.dev.dependencies]

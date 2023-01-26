@@ -1,5 +1,6 @@
 .activate
 .venv
+.env
 __pyache__
 venv
-.env
+instance
