@@ -44,16 +44,20 @@ def validate_session(authorization: str) -> (exceptions.HTTPException, int):
 
 # ------------------- Endpoints -----------------------
 
-
-class User_form(BaseModel):
+class User_form_login(BaseModel):
     username: str
     password: str
+
+class User_form_signup(User_form_login):
     email: str = None
 
+class Token_json(BaseModel):
+    token: str
 
-# /user
-@app.post("/user", status_code=201)
-async def new_user(form: User_form, db: Session = Depends(get_db)):
+# --- /user ---
+# sign up
+@app.post("/user", status_code=201, response_model=Token_json)
+async def sign_up(form: User_form_signup, db: Session = Depends(get_db)):
 
     # Setup
     username = form.username.strip()
@@ -70,7 +74,7 @@ async def new_user(form: User_form, db: Session = Depends(get_db)):
 
     # Syntax check for username and password
     if has_whitespace(password) or has_whitespace(username):
-        raise
+        raise whitespace_exception
 
     # Check if username in database
     if crud.user_exists(db, username):
@@ -82,13 +86,45 @@ async def new_user(form: User_form, db: Session = Depends(get_db)):
         raise db_error_exception
 
     # Gen token
-    token = utils.gen_token(user_id)
+    token:str = utils.gen_token(user_id)
 
-    # Return jwt token
-    return token
+    return Token_json(token=token)
 
+# log in
+@app.get('/user', status_code=200, response_model=Token_json)
+async def log_in(form: User_form_login, db: Session = Depends(get_db)):
+    
+    # Setup
+    username = form.username.strip()
+    password = form.password.strip()
+    username_404_exception = HTTPException(
+        404, detail="User not found"
+    )
+    username_password_exception = HTTPException(
+        400, detail="Username or password invalid"
+    )
+    db_error_exception = HTTPException(
+        500, detail="Something went wrong when creating user"
+    )
 
-@app.get("/user", status_code=200, response_model=schema.User_tasks)
+    # Syntax check for username and password
+    if has_whitespace(password) or has_whitespace(username):
+        raise username_password_exception
+
+    # Get user
+    user = crud.get_user(db, username=username)
+
+    # Check if username exsiste
+    if not username:
+        raise username_404_exception
+
+    # Gen token
+    token:str = utils.gen_token(user.id)
+
+    return Token_json(token=token)
+
+# get user's tasks
+@app.get("/user/tasks", status_code=200, response_model=schema.User_tasks)
 async def get_user_tasks(
     db: Session = Depends(get_db), authorization: str = Header(None)
 ):
@@ -110,7 +146,8 @@ async def get_user_tasks(
         raise db_error_exception
 
 
-# /task
+# --- /task ---
+# add task
 @app.post("/task", status_code=201)
 async def create_task(
     task: schema.New_taskORM,
@@ -133,6 +170,10 @@ async def create_task(
     else:
         raise HTTPException(500, "Something went wrong when creating task")
 
+# delete task
+@app.delete('/task', status_code=204)
+def delete_task():
+    pass
 
 # /test
 @app.get("/test", status_code=200)

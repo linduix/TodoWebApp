@@ -23,12 +23,19 @@ def user_exists(db: Session, username: str) -> bool:
     return query is not None
 
 
-def get_user(id: int = None, email: str = None, username: str = None) -> User:
-    if not id and not emai and not username:
-        return None
+def get_user(db: Session, id: int = None, email: str = None, username: str = None) -> User:
     if id:
-        user = User.query.filter_by(id=id).first()
+        user = db.query(User).filter_by(id=id).first()
         return user
+    elif email:
+        user = db.query(User).filter_by(email=email).first()
+        return user
+    elif username:
+        user = db.query(User).filter_by(username=username).first()
+        return user
+    else:
+        return None
+    
 
 
 # return: ok, List[TaskORM]

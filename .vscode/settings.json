@@ -17,5 +17,6 @@
         "class",
         "className",
         "ngClass"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }
